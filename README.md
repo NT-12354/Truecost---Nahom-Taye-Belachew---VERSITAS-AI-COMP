@@ -75,7 +75,7 @@ This is a prototype and not financial advice. Net prices are averages for studen
 
 <h2>🆕 What I Added</h2>
 
-I compared a neural network against gradient boosting, ridge regression, and two simple baselines on schools the models never saw. Gradient boosting scored slightly better ($3,835 vs $4,099 average error), but I chose the neural network for the app because it runs directly in the browser in plain JavaScript with no extra libraries. I ran the full pipeline on the College Scorecard data, checked that the error range covered 75.4 percent of test prices, found that the raw model's price curves were not always increasing with income, kept the running-maximum fix for that in the app, exported the trained weights to the website, and verified that the JavaScript predictions match the Python model.
+A neural net was tried versus gradient boosting, ridge regression, and two baseline models on new schools. The gradient boosting algorithm performed better than the rest marginally ($3,835 versus $4,099 average error), but I chose a neural network model to implement the web application because of its capability to be executed inside a browser via pure JavaScript without any other package. I ran the whole pipeline with College Scorecard dataset, made sure that the range of the errors covers 75.4% of prices from the test set, noted that the increasing property of raw prices with respect to income did not hold anymore, used the running-maximum fix for this issue in the web application, saved the trained weights to the website, and ensured that JavaScript outputs correspond to the predictions of the Python model.
 
 ---
 
