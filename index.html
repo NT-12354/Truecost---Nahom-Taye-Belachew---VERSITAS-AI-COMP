@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TrueCost: What will college really cost you?</title>
+<style>
+:root{--bg:#07111f;--card:#0f1c2e;--card2:#142540;--line:#1f3350;--text:#eaf2ff;--muted:#8ea3c2;
+--a:#10d9a0;--b:#3b82f6;--warn:#fbbf24;--bad:#fb7185;--grad:linear-gradient(135deg,var(--a),var(--b))}
+*{box-sizing:border-box;margin:0}
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;
+background-image:radial-gradient(circle at 10% -10%,#0b6e5a55,transparent 40%),radial-gradient(circle at 95% 5%,#1d4ed855,transparent 40%);background-attachment:fixed}
+.wrap{max-width:1050px;margin:auto;padding:0 20px}
+.hero{padding:64px 0 28px;text-align:center}
+.pill{display:inline-block;padding:6px 14px;border:1px solid var(--line);border-radius:99px;font-size:.8rem;color:var(--muted);background:#ffffff08}
+h1{font-size:clamp(2.1rem,6vw,3.9rem);line-height:1.07;letter-spacing:-.04em;margin:18px 0 14px;font-weight:800}
+h1 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--muted);max-width:680px;margin:auto;font-size:1.05rem}
+.chips{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+.chip{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 18px;min-width:130px}
+.chip b{display:block;font-size:1.5rem;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.chip small{color:var(--muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em}
+section{margin-top:40px}
+h2{font-size:1.6rem;letter-spacing:-.03em;margin-bottom:6px}
+.sub{color:var(--muted);margin-bottom:16px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+.ctrls{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px}
+label{display:flex;justify-content:space-between;font-size:.85rem;color:var(--muted);margin-bottom:6px;gap:10px}
+label b{color:var(--a);font-size:1rem}
+input[type=range]{width:100%;accent-color:var(--a)}
+input,select{font:inherit;color:var(--text);background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:9px 11px;outline:none;min-width:0}
+input:focus,select:focus{border-color:var(--a)}
+small.note{color:var(--muted);font-size:.78rem;display:block;margin-top:4px;min-height:1.1em}
+.filters{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;align-items:center}
+.filters input[type=text]{flex:1;min-width:180px}
+.chk{display:flex;gap:6px;align-items:center;font-size:.85rem;color:var(--muted);margin:0}
+.summary{margin:18px 0 10px;color:var(--muted);font-size:.9rem}
+.school{display:grid;grid-template-columns:1fr auto auto;gap:18px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:10px}
+.school h3{font-size:1.05rem}
+.meta{color:var(--muted);font-size:.82rem;margin:3px 0 8px}
+.tag{font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:99px;text-transform:uppercase;letter-spacing:.05em;margin-right:4px}
+.tag.pub{background:#3b82f622;color:#7db1ff}.tag.priv{background:#a78bfa22;color:#c4b5fd}
+.badge{font-size:.74rem;font-weight:600;padding:3px 10px;border-radius:99px;margin-right:6px}
+.badge.good{background:#10d9a022;color:var(--a)}.badge.warn{background:#fbbf2422;color:var(--warn)}.badge.bad{background:#fb718522;color:var(--bad)}
+.s-price{text-align:right}
+.s-price small{display:block;color:var(--muted);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em}
+.s-price b{font-size:1.7rem;letter-spacing:-.03em}
+.s-price .r{display:block;font-size:.8rem;color:var(--muted)}
+.s-price .st{display:block;font-size:.78rem;color:var(--a)}
+.btn{border:0;cursor:pointer;font:inherit;font-weight:600;padding:10px 18px;border-radius:11px;color:#04130e;background:var(--grad);transition:.2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px #10d9a044}
+.btn.sm{padding:7px 14px;font-size:.85rem}.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+.s-actions{display:flex;gap:8px;align-items:center}
+.star{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:10px;width:36px;height:34px;cursor:pointer;font-size:1.05rem}
+.star.on{color:var(--warn);border-color:var(--warn)}
+@media(max-width:700px){.school{grid-template-columns:1fr}.s-price{text-align:left}}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+th,td{padding:9px 8px;text-align:left;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:500;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em}
+tr.hl td{color:var(--a);font-weight:600}
+.scroll{overflow-x:auto}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.bars div{display:grid;grid-template-columns:150px 1fr 44px;gap:10px;align-items:center;font-size:.82rem;margin:6px 0;color:var(--muted)}
+.bars i{display:block;height:9px;border-radius:9px;background:var(--grad)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:14px 0}
+.stat{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px}
+.stat small{color:var(--muted);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em}
+.stat b{display:block;font-size:1.25rem}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;align-items:end}
+.form input,.form select{width:100%}
+.form label{flex-direction:column;gap:4px}
+#myOut{margin-top:18px}
+.chart{width:100%;height:auto;margin-top:6px}
+.chart .grid{stroke:var(--line)}.chart .ax{fill:var(--muted);font-size:11px}
+.chart .stk{stroke:var(--warn);stroke-dasharray:5 4}.chart .curve{fill:none;stroke:var(--a);stroke-width:3}
+.chart .act{fill:#fff;stroke:var(--a);stroke-width:2.5}.chart .me{stroke:var(--b);stroke-dasharray:4 4}.chart .mep{fill:var(--b)}
+.legend{font-size:.78rem;color:var(--muted)}
+#modal{position:fixed;inset:0;background:#000a;display:none;align-items:flex-start;justify-content:center;overflow:auto;padding:30px 14px;z-index:20}
+#modal.on{display:flex}
+.sheet{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;max-width:720px;width:100%;position:relative}
+.close{position:absolute;right:14px;top:10px;background:none;border:0;color:var(--muted);font-size:1.7rem;cursor:pointer}
+.warnbox{background:#fbbf2414;border:1px solid #fbbf2455;color:#fde68a;border-radius:12px;padding:12px 14px;font-size:.85rem;margin-top:14px}
+ul.lim{padding-left:20px;color:var(--muted);font-size:.9rem}ul.lim li{margin:5px 0}
+footer{margin-top:60px;padding:36px 20px;border-top:1px solid var(--line);color:var(--muted);font-size:.83rem;text-align:center}
+footer a{color:var(--a)}
+.badge-ok{color:var(--a)}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+  <span class="pill">Finance track prototype · Not financial advice</span>
+  <h1>The sticker price is fiction.<br><em>See what college will really cost you.</em></h1>
+  <p>TrueCost uses a neural network trained on U.S. Department of Education data to predict your net price at four-year colleges, then shows what borrowing would mean for your future paycheck.</p>
+  <div class="chips" id="chips"></div>
+</div></header>
+
+<main class="wrap">
+  <section class="panel">
+    <div class="ctrls">
+      <div><label>Family income per year, before taxes <b id="incV"></b></label>
+        <input type="range" id="inc" min="0" max="200000" step="1000" value="60000">
+        <small class="note" id="incNote"></small></div>
+      <div><label>What your family can pay per year without loans <b id="budV"></b></label>
+        <input type="range" id="bud" min="0" max="60000" step="500" value="10000">
+        <small class="note">Savings, income, and scholarships you are sure about.</small></div>
+    </div>
+    <div class="filters">
+      <input type="text" id="q" placeholder="Search a college...">
+      <select id="type"><option value="all">Public and private</option><option value="1">Public only</option><option value="2">Private only</option></select>
+      <select id="state"><option value="all">All states</option></select>
+      <select id="sort"><option value="price">Lowest price for me</option><option value="value">Best value (earnings vs cost)</option><option value="earn">Highest earnings</option></select>
+      <label class="chk"><input type="checkbox" id="hide"> Only schools with no loans needed</label>
+    </div>
+  </section>
+
+  <div class="summary" id="summary">Crunching numbers...</div>
+  <div id="list"></div>
+  <div style="text-align:center;margin:14px 0"><button class="btn ghost" id="more" style="display:none">Show more</button></div>
+
+  <section id="shortlist"><h2>⭐ Your shortlist</h2><p class="sub">Star schools above to compare them side by side. Saved in your browser.</p>
+    <div class="panel scroll" id="shortBox"></div></section>
+
+  <section id="mystery"><h2>🔮 Not on the list? Predict any school</h2>
+    <p class="sub">Enter a few public facts about a college and the model estimates its net price at your income.</p>
+    <div class="panel">
+      <div class="form">
+        <label>Type<select id="myCtl"><option value="1">Public</option><option value="2" selected>Private</option></select></label>
+        <label>Sticker price (total cost of attendance, $/yr)<input type="number" id="myCoa" placeholder="e.g. 62000"></label>
+        <label>Published tuition ($/yr)<input type="number" id="myTui" placeholder="e.g. 45000"></label>
+        <label>Admission rate % (optional)<input type="number" id="myAdm" min="1" max="100" placeholder="e.g. 35"></label>
+        <label>Undergrad enrollment (optional)<input type="number" id="myEnr" placeholder="e.g. 5000"></label>
+        <button class="btn" id="myGo">Predict</button>
+      </div>
+      <div id="myOut"></div>
+    </div></section>
+
+  <section id="how"><h2>🧠 How the AI works</h2>
+    <p class="sub">Everything below comes from the actual training run, measured on schools the model never saw.</p>
+    <div class="grid2">
+      <div class="panel"><h3 style="margin-bottom:10px">Model comparison</h3><div class="scroll"><table id="mtable"></table></div>
+        <small class="note">Error = average dollars per year the prediction is off.</small></div>
+      <div class="panel"><h3 style="margin-bottom:10px">What drives the price</h3><div class="bars" id="imp"></div></div>
+    </div>
+    <div class="panel" style="margin-top:20px">
+      <h3 style="margin-bottom:8px">Pipeline</h3>
+      <ul class="lim">
+        <li>Data: College Scorecard net price for five family-income brackets at ~<span id="nSch"></span> four-year schools.</li>
+        <li>Model: a small neural network (2 hidden layers) that takes family income plus school traits (sticker price, selectivity, size, share of low-income students, and more) and predicts log net price.</li>
+        <li>Honest testing: schools are split into train, calibration, and test sets, so the model is scored on schools it has never seen.</li>
+        <li>Error ranges: calibrated on held-out schools, then checked on separate test schools.</li>
+        <li>The network runs live in your browser. Nothing you type leaves your device.</li>
+      </ul>
+      <div class="warnbox"><b>Limitations.</b> Net prices are averages for students who receive federal aid, not a quote for you. Income brackets are the Department of Education's, and the top one is "$110k+", so estimates above that are the least certain. Borrowing is simplified (4 equal years, 10-year repayment at an assumed 6.5%, no interest while in school). Earnings are for former federal-aid students 10 years after entry. This is a prototype for learning, <b>not financial advice</b>. Use each college's own net price calculator and talk to a counselor before deciding.</div>
+    </div></section>
+</main>
+
+<div id="modal"><div class="sheet"><button class="close" id="close">×</button><div id="mBody"></div></div></div>
+
+<footer>
+  TrueCost, built for the Veritas AI Hackathon 2026 (Finance track) by Nahom Taye.<br>
+  Data: <a href="https://collegescorecard.ed.gov/data/">U.S. Dept. of Education College Scorecard</a> · Modeling: scikit-learn, pandas, NumPy · Code written with help from an AI assistant (Claude by Anthropic), reviewed and tested by the author.
+</footer>
+
+<script src="data.js"></script>
+<script>
+(function(){
+const T = window.TRUECOST;
+if(!T){document.body.innerHTML='<p style="padding:40px;color:#fff">data.js is missing. Run the notebook and put data.js next to index.html.</p>';return}
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const usd=n=>'$'+Math.round(n).toLocaleString('en-US');
+const k=n=>n>=1000?'$'+(Math.round(n/100)/10)+'k':'$'+Math.round(n);
+const M=T.model, SC=T.schools, byId={};
+SC.forEach(s=>byId[s.id]=s);
+const FED=27000, RATE=0.065/12, NPAY=120;
+const BR=['$0–30k','$30–48k','$48–75k','$75–110k','$110k+'];
+
+/* ---------- Neural network (runs in the browser) ---------- */
+const NET=M.layers.map(l=>({b:Float64Array.from(l.b),Wt:l.b.map((_,j)=>Float64Array.from(l.W.map(r=>r[j])))}));
+function forward(x){
+  let a=x;
+  for(let l=0;l<NET.length;l++){
+    const {b,Wt}=NET[l],out=new Float64Array(b.length),last=l===NET.length-1;
+    for(let j=0;j<b.length;j++){let s=b[j];const w=Wt[j];for(let i=0;i<a.length;i++)s+=a[i]*w[i];out[j]=(!last&&s<0)?0:s}
+    a=out;
+  }
+  return a[0];
+}
+function featurize(r,income){
+  const x=[];
+  for(const n of M.num){
+    let v=n==='log_income'?Math.log(income):r[n];
+    if(v==null||Number.isNaN(v))v=M.stats.median[n];
+    x.push((v-M.stats.mean[n])/M.stats.std[n]);
+  }
+  for(const n of M.bin)x.push(r[n]?1:0);
+  return x;
+}
+function makeCurve(r){let m=0;return M.grid.map(g=>{m=Math.max(m,Math.exp(forward(featurize(r,g))));return m})}
+function interp(c,x){
+  const g=M.grid;if(x<=g[0])return c[0];if(x>=g[g.length-1])return c[c.length-1];
+  let i=1;while(g[i]<x)i++;const t=(x-g[i-1])/(g[i]-g[i-1]);return c[i-1]+t*(c[i]-c[i-1]);
+}
+
+/* ---------- State ---------- */
+const st={income:60000,budget:10000,type:'all',state:'all',q:'',sort:'price',hide:false,limit:40,
+  short:JSON.parse(localStorage.getItem('tc_short')||'[]')};
+const saveShort=()=>localStorage.setItem('tc_short',JSON.stringify(st.short));
+
+function analyze(s,income=st.income){
+  const p=interp(s._curve,income),lo=p*Math.exp(M.q10),hi=p*Math.exp(M.q90);
+  const gap=Math.max(0,p-st.budget),borrow=gap*4;
+  const pay=borrow>0?borrow*RATE/(1-Math.pow(1+RATE,-NPAY)):0;
+  const ratio=s.earn?pay/(s.earn/12):null;
+  let tier;
+  if(borrow===0)tier=['good','Fits your budget'];
+  else if(ratio==null)tier=['warn','Needs loans'];
+  else if(ratio<=0.08)tier=['good','Manageable debt'];
+  else if(ratio<=0.15)tier=['warn','Stretch'];
+  else tier=['bad','High debt risk'];
+  return{p,lo,hi,gap,borrow,pay,ratio,tier,val:s.earn?s.earn/(p*4+1):null};
+}
+
+/* ---------- Chart ---------- */
+function chart(o){
+  const W=640,H=300,ml=58,mr=18,mt=18,mb=44,xmax=200000;
+  const vals=[...o.curve,o.sticker||0,...(o.actual||[]).filter(v=>v!=null)];
+  const ymax=Math.ceil(Math.max(...vals)*1.1/5000)*5000;
+  const X=v=>ml+v/xmax*(W-ml-mr),Y=v=>H-mb-v/ymax*(H-mt-mb);
+  let s=`<svg viewBox="0 0 ${W} ${H}" class="chart" role="img" aria-label="Predicted net price by family income">`;
+  for(let i=0;i<=4;i++){const v=ymax*i/4;s+=`<line x1="${ml}" x2="${W-mr}" y1="${Y(v)}" y2="${Y(v)}" class="grid"/><text x="${ml-8}" y="${Y(v)+4}" text-anchor="end" class="ax">${k(v)}</text>`}
+  for(let i=0;i<=4;i++){const v=xmax*i/4;s+=`<text x="${X(v)}" y="${H-mb+20}" text-anchor="middle" class="ax">${k(v)}</text>`}
+  s+=`<text x="${(ml+W-mr)/2}" y="${H-6}" text-anchor="middle" class="ax">Family income</text>`;
+  if(o.sticker)s+=`<line x1="${ml}" x2="${W-mr}" y1="${Y(o.sticker)}" y2="${Y(o.sticker)}" class="stk"/><text x="${W-mr-4}" y="${Y(o.sticker)-6}" text-anchor="end" class="ax">Sticker price ${k(o.sticker)}</text>`;
+  s+=`<polyline class="curve" points="${M.grid.map((g,i)=>X(g)+','+Y(o.curve[i])).join(' ')}"/>`;
+  (o.actual||[]).forEach((v,i)=>{if(v!=null)s+=`<circle cx="${X(M.mids[i])}" cy="${Y(v)}" r="5" class="act"/>`});
+  const yp=interp(o.curve,o.income);
+  s+=`<line x1="${X(o.income)}" x2="${X(o.income)}" y1="${mt}" y2="${H-mb}" class="me"/><circle cx="${X(o.income)}" cy="${Y(yp)}" r="6" class="mep"/></svg>`;
+  return s+`<div class="legend">Green line: model prediction · White dots: reported by the Dept. of Education · Blue: you</div>`;
+}
+
+/* ---------- Results ---------- */
+function view(){
+  let list=SC.filter(s=>(st.type==='all'||String(s.ctl)===st.type)&&(st.state==='all'||s.state===st.state)&&(!st.q||s.name.toLowerCase().includes(st.q)))
+    .map(s=>({s,a:analyze(s)}));
+  const free=list.filter(x=>x.a.borrow===0).length;
+  if(st.hide)list=list.filter(x=>x.a.borrow===0);
+  if(st.sort==='price')list.sort((x,y)=>x.a.p-y.a.p);
+  else if(st.sort==='earn')list.sort((x,y)=>(y.s.earn||0)-(x.s.earn||0));
+  else list.sort((x,y)=>(y.a.val||0)-(x.a.val||0));
+  return{list,free};
+}
+function card({s,a}){
+  const on=st.short.includes(s.id);
+  return `<article class="school"><div>
+    <h3>${esc(s.name)}</h3>
+    <div class="meta"><span class="tag ${s.ctl==1?'pub':'priv'}">${s.ctl==1?'Public':'Private'}</span>${esc(s.city)}, ${esc(s.state)}${s.earn?` · median earnings ${usd(s.earn)} after 10 yrs`:''}</div>
+    <span class="badge ${a.tier[0]}">${a.tier[1]}</span>${a.borrow>FED?'<span class="badge bad">Above federal loan caps</span>':''}</div>
+    <div class="s-price"><small>Your predicted net price / yr</small><b>${usd(a.p)}</b><span class="r">likely ${usd(a.lo)} – ${usd(a.hi)}</span><span class="st">Sticker ${usd(s.sticker)} · you save ~${usd(Math.max(0,s.sticker-a.p))}</span></div>
+    <div class="s-actions"><button class="btn sm" data-open="${s.id}">Details</button><button class="star ${on?'on':''}" data-star="${s.id}" title="Add to shortlist">★</button></div></article>`;
+}
+let pending=false;
+function render(){
+  if(pending)return;pending=true;
+  requestAnimationFrame(()=>{
+    pending=false;
+    $('#incV').textContent=usd(st.income);$('#budV').textContent=usd(st.budget);
+    $('#incNote').textContent=st.income>110000?'Heads up: the data’s top bracket is $110k+, so estimates here are the least certain.':'';
+    const{list,free}=view();
+    $('#summary').innerHTML=`<b>${list.length.toLocaleString()}</b> schools shown · <b>${free.toLocaleString()}</b> would fit your budget with no loans`;
+    $('#list').innerHTML=list.slice(0,st.limit).map(card).join('')||'<div class="panel">No schools match those filters.</div>';
+    $('#more').style.display=list.length>st.limit?'inline-block':'none';
+    renderShort();
+  });
+}
+function renderShort(){
+  const rows=st.short.map(id=>byId[id]).filter(Boolean).map(s=>({s,a:analyze(s)}));
+  $('#shortBox').innerHTML=rows.length?`<table><tr><th>School</th><th>Net price/yr</th><th>4-yr cost</th><th>Est. borrowing</th><th>Monthly payment</th><th>Verdict</th><th></th></tr>${rows.map(({s,a})=>`<tr><td>${esc(s.name)}</td><td>${usd(a.p)}</td><td>${usd(a.p*4)}</td><td>${usd(a.borrow)}</td><td>${a.pay?usd(a.pay)+'/mo':'—'}</td><td><span class="badge ${a.tier[0]}">${a.tier[1]}</span></td><td><button class="star on" data-star="${s.id}">★</button></td></tr>`).join('')}</table>`:'<span style="color:var(--muted)">Nothing yet. Tap the ★ on any school.</span>';
+}
+
+/* ---------- Details modal ---------- */
+function stats4(a,earn){
+  return `<div class="stats">
+  <div class="stat"><small>Net price / yr</small><b>${usd(a.p)}</b></div>
+  <div class="stat"><small>4-year cost</small><b>${usd(a.p*4)}</b></div>
+  <div class="stat"><small>Est. borrowing</small><b>${usd(a.borrow)}</b></div>
+  <div class="stat"><small>Monthly payment</small><b>${a.pay?usd(a.pay):'$0'}</b></div>
+  <div class="stat"><small>Payment vs earnings</small><b>${a.ratio!=null?(a.ratio*100).toFixed(1)+'%':'n/a'}</b></div></div>`;
+}
+function openDetails(id){
+  const s=byId[id],a=analyze(s);
+  const rows=M.mids.map((m,i)=>{const act=s['np'+(i+1)];return `<tr><td>${BR[i]}</td><td>${act!=null?usd(act):'Not reported'}</td><td>${usd(interp(s._curve,m))}</td></tr>`}).join('');
+  const safeUrl=s.url&&/^(https?:\/\/)?[\w.-]/.test(s.url)?(s.url.startsWith('http')?s.url:'http://'+s.url):null;
+  $('#mBody').innerHTML=`<h2>${esc(s.name)}</h2><p class="sub">${esc(s.city)}, ${esc(s.state)} · ${s.ctl==1?'Public':'Private nonprofit'}${safeUrl?` · <a style="color:var(--a)" href="${esc(safeUrl)}" target="_blank" rel="noopener">website</a>`:''}</p>
+  <span class="badge ${a.tier[0]}">${a.tier[1]}</span><span class="badge good" style="background:#3b82f622;color:#7db1ff">likely ${usd(a.lo)} – ${usd(a.hi)} / yr</span>
+  ${stats4(a,s.earn)}${chart({curve:s._curve,actual:[1,2,3,4,5].map(i=>s['np'+i]),sticker:s.sticker,income:st.income})}
+  <div class="scroll" style="margin-top:12px"><table><tr><th>Income bracket</th><th>Reported net price</th><th>Model estimate</th></tr>${rows}</table></div>
+  ${a.borrow>FED?'<div class="warnbox">Estimated borrowing is above the roughly $27,000 federal loan total for dependent undergraduates, so this plan would likely need private or parent loans. Check studentaid.gov for current limits.</div>':''}
+  <div class="warnbox">Estimates assume 4 equal years, a 10-year loan at 6.5%, and no interest during school. Prototype only, not financial advice.</div>`;
+  $('#modal').classList.add('on');
+}
+
+/* ---------- Mystery school ---------- */
+$('#myGo').onclick=()=>{
+  const coa=+$('#myCoa').value,tui=+$('#myTui').value,adm=$('#myAdm').value,enr=+$('#myEnr').value;
+  if(!(coa>0)){$('#myOut').innerHTML='<div class="warnbox">Enter the sticker price (cost of attendance) first.</div>';return}
+  const priv=$('#myCtl').value==='2';
+  const r={private:priv?1:0,sat_missing:1,adm_missing:adm===''?1:0,adm_rate:adm===''?null:+adm/100,sat_avg:null,
+    log_sticker:Math.log(coa),log_tuition_in:tui>0?Math.log(tui):null,log_tuition_out:(tui>0&&priv)?Math.log(tui):null,
+    log_enroll:enr>0?Math.log(enr):null,pct_pell:null,pct_loan:null,grad_rate:null,log_spend:null};
+  const curve=makeCurve(r),a=analyze({_curve:curve,earn:null});
+  $('#myOut').innerHTML=`<h3>At ${usd(st.income)} family income, predicted net price: <span style="color:var(--a)">${usd(a.p)}</span> / yr <small style="color:var(--muted)">(likely ${usd(a.lo)} – ${usd(a.hi)})</small></h3>
+  ${chart({curve,actual:[],sticker:coa,income:st.income})}
+  <small class="note">Details you left blank use typical values, so treat this as a ballpark.</small>`;
+};
+
+/* ---------- Wiring ---------- */
+$('#inc').oninput=e=>{st.income=+e.target.value;render()};
+$('#bud').oninput=e=>{st.budget=+e.target.value;render()};
+$('#q').oninput=e=>{st.q=e.target.value.trim().toLowerCase();st.limit=40;render()};
+$('#type').onchange=e=>{st.type=e.target.value;st.limit=40;render()};
+$('#state').onchange=e=>{st.state=e.target.value;st.limit=40;render()};
+$('#sort').onchange=e=>{st.sort=e.target.value;render()};
+$('#hide').onchange=e=>{st.hide=e.target.checked;st.limit=40;render()};
+$('#more').onclick=()=>{st.limit+=40;render()};
+document.addEventListener('click',e=>{
+  const o=e.target.dataset.open,s=e.target.dataset.star;
+  if(o)openDetails(+o);
+  if(s){const id=+s;st.short=st.short.includes(id)?st.short.filter(x=>x!==id):[...st.short,id];saveShort();render()}
+  if(e.target.id==='modal'||e.target.id==='close')$('#modal').classList.remove('on');
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#modal').classList.remove('on')});
+
+/* ---------- Boot ---------- */
+setTimeout(()=>{
+  SC.forEach(s=>s._curve=makeCurve(s));
+  // Prove the JavaScript network matches the Python one
+  let maxd=0;M.selftest.forEach(t=>{maxd=Math.max(maxd,Math.abs(forward(featurize(SC[t.i],t.income))-t.y))});
+  const ok=maxd<1e-4,m=M.metrics;
+  $('#chips').innerHTML=[
+    [SC.length.toLocaleString(),'schools'],
+    ['±'+usd(m.mae),'typical test error / yr'],
+    [(m.coverage*100).toFixed(0)+'%','of test prices inside range'],
+    [ok?'✓ Verified':'⚠ Mismatch','JS matches Python']
+  ].map(([b,s])=>`<div class="chip"><b>${b}</b><small>${s}</small></div>`).join('');
+  [...new Set(SC.map(s=>s.state))].sort().forEach(x=>$('#state').insertAdjacentHTML('beforeend',`<option>${esc(x)}</option>`));
+  $('#nSch').textContent=SC.length.toLocaleString();
+  $('#mtable').innerHTML='<tr><th>Model</th><th>Avg error</th><th>R²</th></tr>'+m.table.map(r=>`<tr class="${r.model.includes('Neural')?'hl':''}"><td>${esc(r.model)}</td><td>${usd(r.mae)}</td><td>${r.r2}</td></tr>`).join('');
+  const L={log_income:'Family income',log_sticker:'Sticker price',log_tuition_in:'In-state tuition',log_tuition_out:'Out-of-state tuition',adm_rate:'Admission rate',sat_avg:'Average SAT',log_enroll:'Enrollment',pct_pell:'% Pell students',pct_loan:'% with loans',grad_rate:'Graduation rate',log_spend:'Spending / student',private:'Private school',sat_missing:'No SAT data',adm_missing:'No admit-rate data'};
+  const imp=Object.entries(m.importance).sort((a,b)=>b[1]-a[1]).slice(0,8),mx=imp[0][1]||1;
+  $('#imp').innerHTML=imp.map(([n,v])=>`<div><span>${L[n]||n}</span><i style="width:${v/mx*100}%"></i><span>${v.toFixed(0)}%</span></div>`).join('');
+  render();
+},40);
+})();
+</script>
+</body>
+</html>
