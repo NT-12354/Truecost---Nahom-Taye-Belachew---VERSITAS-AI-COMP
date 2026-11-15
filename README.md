@@ -27,8 +27,6 @@ A neural network (2 hidden layers, 64 and 32 units) predicts log net price from 
 
 All results are measured on schools the model never saw. Schools are split into train, calibration, and test sets so no school appears in more than one.
 
-<img src="model_comparison.png" width="48%"> <img src="feature_importance.png" width="48%">
-
 <h2>✨ App Features</h2>
 
 - Personal net price estimates for every school, with an honest range
