@@ -7,8 +7,8 @@ An AI tool that predicts the net price of four-year U.S. colleges for your famil
 </p>
 
 <p align="center">
-<a href="[PASTE-YOUR-LIVE-SITE-LINK](https://nt-12354.github.io/Truecost---Nahom-Taye-Belachew---VERSITAS-AI-COMP/)">Live Demo</a> ·
-<a href="[PASTE-YOUR-COLAB-LINK](https://colab.research.google.com/drive/1zdji9xcK2W1aXsXj-OqNZmfaZXvplkpC#scrollTo=SiA5YVvlWdsh)">Colab Notebook</a>
+<a href="(https://nt-12354.github.io/Truecost---Nahom-Taye-Belachew---VERSITAS-AI-COMP/)">Live Demo</a> ·
+<a href="(https://colab.research.google.com/drive/1zdji9xcK2W1aXsXj-OqNZmfaZXvplkpC#scrollTo=SiA5YVvlWdsh)">Colab Notebook</a>
 </p>
 
 ---
