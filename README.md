@@ -27,12 +27,6 @@ A neural network (2 hidden layers, 64 and 32 units) predicts log net price from 
 
 All results are measured on schools the model never saw. Schools are split into train, calibration, and test sets so no school appears in more than one.
 
-| Model | Average error per year | R² |
-|-------|------------------------|----|
-| [PASTE YOUR TABLE FROM CELL 5] | | |
-
-The 80 percent price range is calibrated on separate schools. On test schools it contained the true price [PASTE COVERAGE]% of the time.
-
 <img src="model_comparison.png" width="48%"> <img src="feature_importance.png" width="48%">
 
 <h2>✨ App Features</h2>
@@ -58,12 +52,9 @@ This is a prototype and not financial advice. Net prices are averages for studen
 
 - Data: U.S. Department of Education College Scorecard, https://collegescorecard.ed.gov/data/ (public data)
 - Libraries: scikit-learn, pandas, NumPy, Matplotlib; run on Google Colab; hosted on GitHub Pages
-- AI tool: Claude (Anthropic) helped write and debug the notebook and website code. I reviewed, tested, and can explain every part.
+- AI tool: Claude (Anthropic) helped write and debug the notebook and website code. I reviewed & tested.
 - Tutorials and pretrained models: none used.
 
-<h2>🆕 What I Added</h2>
-
-[WRITE 2 TO 3 SENTENCES IN YOUR OWN WORDS: what you chose, changed, tested, or fixed.]
 
 ---
 
